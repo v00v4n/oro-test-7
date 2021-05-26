@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use App\Application;
 use App\Kernel;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\ErrorHandler\Debug;
