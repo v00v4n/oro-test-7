@@ -19,11 +19,13 @@ namespace OroTest\Bundle\CommandChainBundle\CommandChain;
  */
 class LogFormatter
 {
-    public function formatLog(string $level, string $message, array $context, bool $prefixDate = true): string
+    public const DATETIME_FORMAT  = 'Y-m-d H:i:s';
+
+    public function formatLog(string $level, string $message, array $context): string
     {
         $lines = \preg_split('/\n/', $message);
         $lines = \array_map('trim', $lines);
-        $date = \date('[Y-m-d H:i:s] ');
+        $date = \date('[' . static::DATETIME_FORMAT . '] ');
 
         return $date . \implode(\PHP_EOL . $date, $lines) . \PHP_EOL;
     }

@@ -5,6 +5,7 @@ namespace App;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class Kernel extends BaseKernel
 {
@@ -24,6 +25,21 @@ class Kernel extends BaseKernel
         } elseif (is_file($path = $configFullPath . 'services.php')) {
             /** @noinspection PhpIncludeInspection */
             (require $path)($container->withPath($path), $this);
+        }
+    }
+
+    protected function configureRoutes(RoutingConfigurator $routes): void
+    {
+        $configRelPath = '../../config/';
+        $configFullPath = realpath(__DIR__ . '/' . $configRelPath) . '/';
+
+        $routes->import($configRelPath . '{routes}/' . $this->environment . '/*.yaml');
+        $routes->import($configRelPath . '{routes}/*.yaml');
+
+        if (is_file($configFullPath . 'routes.yaml')) {
+            $routes->import($configRelPath . '{routes.yaml');
+        } elseif (is_file($path = $configFullPath . 'routes.php')) {
+            (require $path)($routes->withPath($path), $this);
         }
     }
 }

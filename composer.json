@@ -29,7 +29,8 @@
         "psr-4": {
             "App\\": "src/App/",
             "OroTest\\": "src/OroTest/"
-        }
+        },
+        "exclude-from-classmap": ["/Tests/"]
     },
     "autoload-dev": {
         "psr-4": {

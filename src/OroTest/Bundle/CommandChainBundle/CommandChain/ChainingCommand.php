@@ -91,7 +91,9 @@ class ChainingCommand extends Command
     protected function configureAll()
     {
         if ($this->configured) {
+            // @codeCoverageIgnoreStart
             return;
+            // @codeCoverageIgnoreEnd
         }
         $this->configured = true;
 
@@ -104,10 +106,18 @@ class ChainingCommand extends Command
             $originalDefinition = $command->getDefinition();
 
             $arguments = $originalDefinition->getArguments();
-            $definition->addArguments($arguments);
+            foreach ($arguments as $argument) {
+                if (!$definition->hasArgument($argument->getName())) {
+                    $definition->addArgument($argument);
+                }
+            }
 
             $options = $originalDefinition->getOptions();
-            $definition->addOptions($options);
+            foreach ($options as $option) {
+                if (!$definition->hasOption($option->getName())) {
+                    $definition->addOption($option);
+                }
+            }
         }
     }
 }

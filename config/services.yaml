@@ -6,8 +6,8 @@
 parameters:
     orotest.command_chain.chains_list:
         - [foo:hello, bar:hi]
-#        - [debug:autowiring, debug:container] # you can register several command chains
-#        - [bar:hi, foo:hello] # throws Exception: command already exists in other chain(s)
+        - [debug:config, debug:router] # you can register several command chains
+#        - [bar:hi, foo:hello, debug:config] # throws Exception: command already exists in other chain
 
 services:
     # default configuration for services in *this* file

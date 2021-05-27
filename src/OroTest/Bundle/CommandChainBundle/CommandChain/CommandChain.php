@@ -134,6 +134,7 @@ class CommandChain implements CommandChainInterface
      * Creates command proxy for member command
      *
      * @return Command
+     * @codeCoverageIgnore
      */
     protected function createMainCommandProxy(): Command
     {
@@ -146,6 +147,7 @@ class CommandChain implements CommandChainInterface
      * @param Command $command
      *
      * @return Command
+     * @codeCoverageIgnore
      */
     protected function createMemberCommandProxy(Command $command): Command
     {
