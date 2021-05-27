@@ -1,0 +1,23 @@
+parameters:
+    orotest.command_chain.chains_list: []
+
+services:
+    orotest.command_chain:
+        class: OroTest\Bundle\CommandChainBundle\CommandChain\CommandChain
+        public: true
+        shared: false
+        arguments:
+            $logger: '@orotest.command_chain.logger'
+
+    orotest.command_chain.logger:
+        parent: logger
+        class: Symfony\Component\HttpKernel\Log\Logger
+        arguments:
+            $minLevel: info
+            $output: "%kernel.logs_dir%/%kernel.environment%.chain-command.log"
+            $formatter:
+                - '@orotest.command_chain.log_formatter'
+                - formatLog
+
+    orotest.command_chain.log_formatter:
+        class: OroTest\Bundle\CommandChainBundle\CommandChain\LogFormatter

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Bundle\ChainCommandBundle\CommandChain;
+namespace OroTest\Bundle\CommandChainBundle\CommandChain;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class ChainingCommand
  *
- * @package App\Bundle\ChainCommandBundle\CommandChain
+ * @package OroTest\Bundle\CommandChainBundle\CommandChain
  */
 class ChainingCommand extends Command
 {

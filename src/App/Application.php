@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Bundle\ChainCommandBundle\CommandChain\CommandChainManager;
+use OroTest\Bundle\CommandChainBundle\CommandChain\CommandChainManager;
 use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
 
 /**

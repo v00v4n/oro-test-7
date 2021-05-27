@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Bundle\ChainCommandBundle\CommandChain;
+namespace OroTest\Bundle\CommandChainBundle\CommandChain;
 
 /**
  * Class LogFormatter
- * @package App\Bundle\ChainCommandBundle\CommandChain
+ * @package OroTest\Bundle\CommandChainBundle\CommandChain
  */
 class LogFormatter
 {

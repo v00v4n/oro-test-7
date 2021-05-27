@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Bundle\ChainCommandBundle\CommandChain;
+namespace OroTest\Bundle\CommandChainBundle\CommandChain;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Command\Command;
 /**
  * Class CommandChain
  *
- * @package App\Bundle\ChainCommandBundle\Service
+ * @package OroTest\Bundle\CommandChainBundle\Service
  */
 class CommandChain implements CommandChainInterface
 {

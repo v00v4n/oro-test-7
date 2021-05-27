@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Bundle\ChainCommandBundle\CommandChain;
+namespace OroTest\Bundle\CommandChainBundle\CommandChain;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Class CommandChainManager
  *
- * @package App\Bundle\ChainCommandBundle\CommandChain
+ * @package OroTest\Bundle\CommandChainBundle\CommandChain
  */
 class CommandChainManager
 {
@@ -46,7 +46,7 @@ class CommandChainManager
      */
     public function registerApplicationChains()
     {
-        $commandChainList = $this->getContainer()->getParameter('app.command_chain.chains_list');
+        $commandChainList = $this->getContainer()->getParameter('orotest.command_chain.chains_list');
         if (!$commandChainList) {
             return;
         }
@@ -103,7 +103,7 @@ class CommandChainManager
      */
     protected function createCommandChain(): CommandChainInterface
     {
-        $chain = $this->getContainer()->get('app.command_chain'); // non shared service
+        $chain = $this->getContainer()->get('orotest.command_chain'); // non shared service
         assert($chain instanceof CommandChainInterface);
 
         return $chain;
