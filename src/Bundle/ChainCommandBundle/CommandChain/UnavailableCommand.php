@@ -20,16 +20,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class UnavailableCommand
+ *
  * @package App\Bundle\ChainCommandBundle\CommandChain
  */
 class UnavailableCommand extends Command
 {
     private Command $command;
+
     private CommandChainInterface $commandChain;
 
     /**
      * UnavailableCommand constructor.
-     * @param Command $command
+     *
+     * @param Command               $command
      * @param CommandChainInterface $commandChain
      */
     public function __construct(Command $command, CommandChainInterface $commandChain)
@@ -39,12 +42,15 @@ class UnavailableCommand extends Command
         $this->commandChain = $commandChain;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
         $errMessage = "Error: {$this->command->getName()} command is a member"
-            . " of {$this->commandChain->getMainCommand()->getName()} command chain"
-            . " and cannot be executed on its own.";
+                      . " of {$this->commandChain->getMainCommand()->getName()} command chain"
+                      . " and cannot be executed on its own.";
 
         $errOutput->writeln($errMessage);
 

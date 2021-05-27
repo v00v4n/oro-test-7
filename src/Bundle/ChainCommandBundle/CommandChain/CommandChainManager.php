@@ -19,11 +19,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class CommandChainManager
+ *
  * @package App\Bundle\ChainCommandBundle\CommandChain
  */
 class CommandChainManager
 {
     private Application $application;
+
     /**
      * @var string[]
      */
@@ -31,6 +33,7 @@ class CommandChainManager
 
     /**
      * CommandChainManager constructor.
+     *
      * @param Application $application
      */
     public function __construct(Application $application)
@@ -38,6 +41,9 @@ class CommandChainManager
         $this->application = $application;
     }
 
+    /**
+     * Registers command chain to Application
+     */
     public function registerApplicationChains()
     {
         $commandChainList = $this->getContainer()->getParameter('app.command_chain.chains_list');
@@ -52,8 +58,13 @@ class CommandChainManager
     }
 
     /**
-     * @param Command|string ...$commands
-     * @return Command[]
+     * Creates new command chain and registers $commands to it.
+     *
+     * Returns list of command proxies that MUST be added back to Application (see {@see Application::addCommands()}).
+     *
+     * @param Command|string ...$commands Commands to be added to chain
+     *
+     * @return Command[] Commands proxies
      */
     public function registerChain(Command|string ...$commands): array
     {
@@ -66,7 +77,7 @@ class CommandChainManager
 
             $name = $command->getName();
             if (in_array($name, $this->allCommandsNames)) {
-                throw new \LogicException("Command {$name} already exists in some command chain");
+                throw new \LogicException("Command {$name} already exists in this or other command chain");
             }
             $this->allCommandsNames[] = $name;
             $resultCommands[] = $chain->addCommand($command);
@@ -75,16 +86,25 @@ class CommandChainManager
         return $resultCommands;
     }
 
-
+    /**
+     * Returns container from application kernel.
+     *
+     * @return ContainerInterface
+     */
     protected function getContainer(): ContainerInterface
     {
         return $this->application->getKernel()->getContainer();
     }
 
-    protected function createCommandChain(): CommandChain
+    /**
+     * Creates new instance of CommandChainInterface.
+     *
+     * @return CommandChainInterface
+     */
+    protected function createCommandChain(): CommandChainInterface
     {
         $chain = $this->getContainer()->get('app.command_chain'); // non shared service
-        assert($chain instanceof CommandChain);
+        assert($chain instanceof CommandChainInterface);
 
         return $chain;
     }

@@ -22,17 +22,15 @@ use Symfony\Bundle\FrameworkBundle\Console\Application as BaseApplication;
  */
 class Application extends BaseApplication
 {
-    private bool $commandsRegistered = false;
+    private bool $commandChainRegistered = false;
 
     protected function registerCommands()
     {
         parent::registerCommands();
 
-        if ($this->commandsRegistered) {
-            return;
+        if (!$this->commandChainRegistered) {
+            $this->commandChainRegistered = true;
+            (new CommandChainManager($this))->registerApplicationChains();
         }
-        $this->commandsRegistered = true;
-
-        (new CommandChainManager($this))->registerApplicationChains();
     }
 }

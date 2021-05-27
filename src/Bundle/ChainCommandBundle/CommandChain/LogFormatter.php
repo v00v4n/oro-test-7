@@ -21,10 +21,10 @@ class LogFormatter
 {
     public function formatLog(string $level, string $message, array $context, bool $prefixDate = true): string
     {
-        $lines = preg_split('/\n/', $message);
-        $lines = array_map('trim', $lines);
-        $date = date('[Y-m-d H:i:s] ');
+        $lines = \preg_split('/\n/', $message);
+        $lines = \array_map('trim', $lines);
+        $date = \date('[Y-m-d H:i:s] ');
 
-        return $date . implode(\PHP_EOL . $date, $lines) . \PHP_EOL;
+        return $date . \implode(\PHP_EOL . $date, $lines) . \PHP_EOL;
     }
 }

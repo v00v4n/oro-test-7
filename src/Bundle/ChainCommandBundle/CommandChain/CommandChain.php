@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace App\Bundle\ChainCommandBundle\CommandChain;
 
-use JetBrains\PhpStorm\Pure;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 
 /**
  * Class CommandChain
+ *
  * @package App\Bundle\ChainCommandBundle\Service
  */
 class CommandChain implements CommandChainInterface
@@ -34,6 +34,7 @@ class CommandChain implements CommandChainInterface
 
     /**
      * CommandChain constructor.
+     *
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
@@ -47,56 +48,17 @@ class CommandChain implements CommandChainInterface
     public function addCommand(Command $command): Command
     {
         $name = $command->getName();
-        if ($this->hasCommand($name)) {
+        if (array_key_exists($name, $this->commandList)) {
             throw new \LogicException("Command with name '$name' is already registered in chain");
         }
         $this->commandList[$name] = $command;
 
-        $mainCommand = $this->mainCommand;
+        $mainCommand = $this->getMainCommand();
         if (!$mainCommand) {
             return $this->processMainCommand($command);
         }
 
-        return $this->processSecondaryCommand($command);
-    }
-
-    #[Pure] public function hasCommand(Command|string $command): bool
-    {
-        if ($command instanceof Command) {
-            $command = $command->getName();
-        }
-
-        return isset($this->commandList[$command]);
-    }
-
-    protected function processMainCommand(Command $command): Command
-    {
-        $this->mainCommand = $command;
-
-        $this->writeLog(
-            "{$command->getName()} is a master command of a command chain that has registered member commands"
-        );
-
-        return new ChainingCommand($this);
-    }
-
-    public function writeLog(string $message): void
-    {
-        $this->logger->info($message);
-    }
-
-    protected function processSecondaryCommand(Command $command): Command
-    {
-        $this->writeLog(
-            "{$command->getName()} registered as a member of {$this->mainCommand->getName()} command chain"
-        );
-
-        return new UnavailableCommand($command, $this);
-    }
-
-    public function getMainCommand(): ?Command
-    {
-        return $this->mainCommand;
+        return $this->processMemberCommand($command);
     }
 
     /**
@@ -105,5 +67,98 @@ class CommandChain implements CommandChainInterface
     public function getCommandList(): array
     {
         return $this->commandList;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMainCommand(): ?Command
+    {
+        return $this->mainCommand;
+    }
+
+    /**
+     * Processes main command after registration
+     *
+     * @param Command $command Main command
+     *
+     * @return Command Command proxy for main command
+     */
+    protected function processMainCommand(Command $command): Command
+    {
+        $this->mainCommand = $command;
+        $this->onMainCommandRegistered($command);
+
+        return $this->createMainCommandProxy();
+    }
+
+    /**
+     * Processes member command after registration
+     *
+     * @param Command $command Member command
+     *
+     * @return Command Command proxy for member command
+     */
+    protected function processMemberCommand(Command $command): Command
+    {
+        $this->onMemberCommandRegistered($command);
+
+        return $this->createMemberCommandProxy($command);
+    }
+
+    /**
+     * Main command registration handler
+     *
+     * @param Command $command
+     */
+    protected function onMainCommandRegistered(Command $command): void
+    {
+        $this->getLogger()->info(
+            "{$command->getName()} is a master command of a command chain that has registered member commands"
+        );
+    }
+
+    /**
+     * Member command registration handler
+     *
+     * @param Command $command
+     */
+    protected function onMemberCommandRegistered(Command $command): void
+    {
+        $this->getLogger()->info(
+            "{$command->getName()} registered as a member of {$this->getMainCommand()->getName()} command chain"
+        );
+    }
+
+    /**
+     * Creates command proxy for member command
+     *
+     * @return Command
+     */
+    protected function createMainCommandProxy(): Command
+    {
+        return new ChainingCommand($this, $this->getLogger());
+    }
+
+    /**
+     * Creates command proxy for member command
+     *
+     * @param Command $command
+     *
+     * @return Command
+     */
+    protected function createMemberCommandProxy(Command $command): Command
+    {
+        return new UnavailableCommand($command, $this);
+    }
+
+    /**
+     * Returns logger
+     *
+     * @return LoggerInterface
+     */
+    protected function getLogger(): LoggerInterface
+    {
+        return $this->logger;
     }
 }

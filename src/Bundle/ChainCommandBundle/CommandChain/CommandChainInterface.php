@@ -17,25 +17,32 @@ use Symfony\Component\Console\Command\Command;
 
 /**
  * Interface CommandChainInterface
+ *
  * @package App\Bundle\ChainCommandBundle\CommandChain
  */
 interface CommandChainInterface
 {
     /**
-     * @param Command $command
-     * @return Command
+     * Adds new command to chain and returns command proxy that
+     * MUST be registered back to Application (see {@see Application::add()})
+     *
+     * @param Command $command Command to be added to chain
+     *
+     * @return Command Command proxy that MUST be registered back to Application
      */
     public function addCommand(Command $command): Command;
 
     /**
+     * Returns list of all commands in chain.
+     *
      * @return Command[]
      */
     public function getCommandList(): array;
 
     /**
+     * Returns main command from chain.
+     *
      * @return Command|null
      */
     public function getMainCommand(): ?Command;
-
-    public function writeLog(string $message): void;
 }
