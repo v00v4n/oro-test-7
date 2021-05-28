@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 
 /**
- * Class CommandChain
+ * Base implementation of {@see CommandChainInterface}
  *
  * @package OroTest\Bundle\CommandChainBundle\Service
  */

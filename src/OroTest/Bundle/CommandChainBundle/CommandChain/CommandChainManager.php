@@ -18,7 +18,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class CommandChainManager
+ * Provides tools for adding Command Chains to Application.
  *
  * @package OroTest\Bundle\CommandChainBundle\CommandChain
  */
@@ -42,7 +42,7 @@ class CommandChainManager
     }
 
     /**
-     * Registers command chain to Application
+     * Registers Command Chain to Application
      */
     public function registerApplicationChains()
     {
@@ -58,7 +58,7 @@ class CommandChainManager
     }
 
     /**
-     * Creates new command chain and registers $commands to it.
+     * Creates new Command Chain and registers $commands to it.
      *
      * Returns list of command proxies that MUST be added back to Application (see {@see Application::addCommands()}).
      *
@@ -87,7 +87,7 @@ class CommandChainManager
     }
 
     /**
-     * Returns container from application kernel.
+     * Returns container from Application Kernel.
      *
      * @return ContainerInterface
      */
@@ -107,5 +107,26 @@ class CommandChainManager
         assert($chain instanceof CommandChainInterface);
 
         return $chain;
+    }
+
+    /**
+     * Application integration shortcut
+     *
+     * @param Application $application
+     */
+    public static function registerCommands(Application $application): void
+    {
+        static $applicationMap;
+        if (!$applicationMap) {
+            $applicationMap = new \WeakMap;
+        }
+
+        if (!empty($applicationMap[$application])) {
+            // prevent repeated call
+            return;
+        }
+        $applicationMap[$application] = true;
+
+        (new static($application))->registerApplicationChains();
     }
 }

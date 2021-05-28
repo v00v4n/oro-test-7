@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ChainingCommand
+ * Command Proxy that executes all commands in chain instead of only main command.
  *
  * @package OroTest\Bundle\CommandChainBundle\CommandChain
  */
@@ -107,16 +107,20 @@ class ChainingCommand extends Command
 
             $arguments = $originalDefinition->getArguments();
             foreach ($arguments as $argument) {
+                // @codeCoverageIgnoreStart
                 if (!$definition->hasArgument($argument->getName())) {
                     $definition->addArgument($argument);
                 }
+                // @codeCoverageIgnoreEnd
             }
 
             $options = $originalDefinition->getOptions();
             foreach ($options as $option) {
+                // @codeCoverageIgnoreStart
                 if (!$definition->hasOption($option->getName())) {
                     $definition->addOption($option);
                 }
+                // @codeCoverageIgnoreEnd
             }
         }
     }

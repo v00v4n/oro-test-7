@@ -5,7 +5,7 @@ services:
     orotest.command_chain:
         class: OroTest\Bundle\CommandChainBundle\CommandChain\CommandChain
         public: true
-        shared: false
+        shared: false # this is obligatory
         arguments:
             $logger: '@orotest.command_chain.logger'
 

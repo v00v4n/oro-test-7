@@ -16,7 +16,9 @@ namespace OroTest\Bundle\CommandChainBundle\CommandChain;
 use Symfony\Component\Console\Command\Command;
 
 /**
- * Interface CommandChainInterface
+ * Describes a Command Chain instance.
+ *
+ * Allows to add command in chain and to get information about commands.
  *
  * @package OroTest\Bundle\CommandChainBundle\CommandChain
  */

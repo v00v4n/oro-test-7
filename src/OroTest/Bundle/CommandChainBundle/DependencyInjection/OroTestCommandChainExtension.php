@@ -31,5 +31,8 @@ class OroTestCommandChainExtension extends Extension
         );
         /** @noinspection PhpUnhandledExceptionInspection */
         $loader->load('services.yaml');
+        if ('test' === $container->getParameter('kernel.environment')) {
+            $loader->load('services_test.yaml');
+        }
     }
 }

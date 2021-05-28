@@ -60,10 +60,37 @@ class CommandChainManagerTest extends TestCase
         $this->registerApplicationChains($chainsList);
     }
 
+    public function testRegisterCommands()
+    {
+        $application = $this->buildApplication();
+
+        $callsCount = &CommandChainManagerStaticMock::$callsCount;
+
+        $this->assertSame(0, $callsCount);
+        CommandChainManagerStaticMock::registerCommands($application);
+        $this->assertSame(1, $callsCount);
+        CommandChainManagerStaticMock::registerCommands($application);
+        $this->assertSame(1, $callsCount);
+
+        $newApplication = $this->buildApplication();
+        CommandChainManagerStaticMock::registerCommands($newApplication);
+        $this->assertSame(2, $callsCount);
+        CommandChainManagerStaticMock::registerCommands($newApplication);
+        $this->assertSame(2, $callsCount);
+    }
+
     protected function registerApplicationChains(array $chainsList): array
     {
         $registeredChains = [];
+        $application = $this->buildApplication($chainsList, $registeredChains);
+        $manager = new CommandChainManager($application);
+        $manager->registerApplicationChains();
 
+        return $registeredChains;
+    }
+
+    protected function buildApplication(array $chainsList = [], &$registeredChains = null): Application
+    {
         $container = $this->createMock(ContainerInterface::class);
         $container->method('getParameter')
             ->will($this->returnCallback(function ($name) use ($chainsList) {
@@ -105,9 +132,7 @@ class CommandChainManagerTest extends TestCase
                 )
             );
 
-        $manager = new CommandChainManager($application);
-        $manager->registerApplicationChains();
 
-        return $registeredChains;
+        return $application;
     }
 }

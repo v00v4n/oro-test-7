@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class UnavailableCommand
+ * Command Proxy which is used to replace chain member command. Always returns error.
  *
  * @package OroTest\Bundle\CommandChainBundle\CommandChain
  */

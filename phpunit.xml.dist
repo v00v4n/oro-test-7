@@ -3,7 +3,6 @@
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
 
@@ -20,12 +19,15 @@
     <php>
         <ini name="error_reporting" value="-1"/>
         <server name="APP_ENV" value="test" force="true"/>
+        <server name="KERNEL_CLASS" value="App\Kernel" force="true"/>
+        <server name="APPLICATION_CLASS" value="App\Application" force="true"/>
         <server name="SHELL_VERBOSITY" value="-1"/>
     </php>
 
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>src/OroTest/Bundle/CommandChainBundle/Tests/Unit/</directory>
+            <directory>src/OroTest/Bundle/CommandChainBundle/Tests/Functional/</directory>
         </testsuite>
     </testsuites>
 
